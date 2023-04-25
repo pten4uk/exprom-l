@@ -1,0 +1,36 @@
+{% if widget.is_initial %}
+{{ widget.initial_text }}: <img style="
+                                               border: 1px solid lightgrey;
+                                               margin-bottom: 15px;
+                                               margin-left: 65px;" src="{{ widget.value.url }}" width="300px"
+                                alt="Фотография">
+{% if not widget.required %}
+<input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" {% if widget.attrs.disabled %}
+       disabled{% endif %}>
+<label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+{% endif %}<br>
+{{ widget.input_text }}:
+
+{% else %}
+<img id="preview-image" src="" width="300px" alt="">
+{% endif %}
+<input data-id="input-image" type="{{ widget.type }}" name="{{ widget.name }}" {% include "django/forms/widgets/attrs.html" %}>
+
+
+<script>
+    let input = document.querySelector('input[data-id="input-image"]')
+
+    input.onchange = (event) => {
+        console.log(event)
+        let preview = document.getElementById('preview-image');
+        let file = event.target.files[0];
+        let reader = new FileReader();
+
+        reader.onloadend = () => {
+            preview.src = reader.result;
+        }
+
+        if (file) reader.readAsDataURL(file);
+        else preview.src = "";
+    }
+</script>

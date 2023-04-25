@@ -1,0 +1,5 @@
+.btn.no-outline {
+    outline: none;
+    border: none;
+    /*padding: 2px;*/
+}

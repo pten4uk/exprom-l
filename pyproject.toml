@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "exprom-l"
+version = "0.1.0"
+description = ""
+authors = ["pten4uk <pten4ik99@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "exprom_l"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.1.7"
+transliterate = "^1.10.2"
+pillow = "^9.4.0"
+django-jazzmin = "^2.6.0"
+django-debug-toolbar = "^3.8.1"
+django-ckeditor = "^6.5.1"
+beautifulsoup4 = "^4.11.2"
+requests = "^2.28.2"
+pystun3 = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

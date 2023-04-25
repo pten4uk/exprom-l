@@ -1,0 +1,117 @@
+import os.path
+
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
+from django.db.models import QuerySet
+
+from .utils import upload_function
+from .utils.process_photo import PhotoFormatter
+from .utils.slug import slugify
+
+
+class Category(models.Model):
+    name = models.CharField('Название', max_length=100, unique=True)
+    slug = models.SlugField('Название ссылки', max_length=100, blank=True, unique=True)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
+    def save(self, *args, **kwargs):
+        self.name: str
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
+class Product(models.Model):
+    number = models.PositiveSmallIntegerField('Номер', primary_key=True)
+    name = models.CharField(
+        'Короткое название',
+        help_text='Короткое название, которое будет отображаться перед номером модели',
+        max_length=30,  # одинаково со slug
+        unique=True,
+    )
+    slug = models.SlugField('Имя ссылки', max_length=30, unique=True)
+    category = models.ForeignKey(
+        Category,
+        verbose_name='Категория',
+        null=True,
+        blank=True,
+        default=None,
+        on_delete=models.SET_DEFAULT,
+    )
+    photo = models.ImageField('Главное фото', upload_to=upload_function, null=True, blank=True)  # добавить валидатор для соотношения сторон фотографии
+    shirt_description = models.CharField('Краткое описание', max_length=50, blank=True, default='')
+    description = models.TextField('Описание', blank=True)
+    width = models.PositiveSmallIntegerField('Ширина')
+    height = models.PositiveSmallIntegerField('Высота')
+    depth = models.PositiveSmallIntegerField('Глубина')
+    price = models.PositiveSmallIntegerField('Цена')
+
+    objects = models.Manager()
+
+    class Meta:
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
+        ordering = ['number']
+
+    def __str__(self):
+        return f'{self.category} {self.number}'
+
+    def save(self, *args, **kwargs):
+
+        # добавляем слаг
+        self.name: str
+        self.slug = slugify(self.name)
+
+        super().save(*args, **kwargs)
+
+        if self.photo:
+            PhotoFormatter(self.photo.path).save()
+
+    def get_additional_photos(self):
+        """
+        Получает полный список объектов дополнительных фотографий,
+        и проверяет существуют ли сами фотографии
+        """
+
+        photos: QuerySet[Photo] = ContentType.objects.get_for_model(self).photo_set.all()
+
+        for photo in photos:
+            photo.check_photo_exists()
+
+        return photos
+
+
+class Photo(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    photo = models.ImageField('Изображение', upload_to=upload_function)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'Изображение {self.pk} для {self.content_object}'
+
+    class Meta:
+        verbose_name = 'Фото'
+        verbose_name_plural = 'Фото'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.photo:
+            PhotoFormatter(self.photo.path).save()
+
+    def check_photo_exists(self):
+        """ Проверяет, существует ли фотография и удаляет объект, если не существует """
+
+        if self.photo and not os.path.exists(self.photo.path):
+            self.delete()

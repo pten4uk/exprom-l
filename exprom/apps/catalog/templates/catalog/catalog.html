@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+{% load static %}
+<!--{% load all_pages_tags %}-->
+
+{% block css_links %}
+<link href="{% static 'catalog/css/catalog.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Каталог{% endblock title %}
+
+
+{% block content %}
+    <div class="container bg-white" >
+        <article class="d-flex">
+            <section class="container-fluid col-3 d-none d-xl-block d-lg-block">
+                <h3 class="headline mb-4">Категории</h3>
+                <ul class="list-group">
+                    {% for category in categories %}
+                    <li class="list-group-item list-group-item-action fa-hand-pointer {% if chosen_category_slug == category.slug %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'catalog_category' category.slug %}">{{ category.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+            <section class="container-fluid">
+                {% block catalog_items %}
+                    {% include 'catalog/catalog_items.html' %}
+                {% endblock catalog_items %}
+            </section>
+        </article>
+    </div>
+{% endblock content %}
