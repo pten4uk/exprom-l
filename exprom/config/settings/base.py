@@ -32,7 +32,7 @@ load_dotenv(os.path.join(BASE_DIR.parent, '.env'))
 
 SECRET_KEY = os.getenv('SECRET_KEY', '')
 
-DEBUG = os.getenv('DEBUG')
+DEBUG = True if os.getenv('DEBUG', 'False') == 'True' else False
 
 ALLOWED_HOSTS = ['*']
 
