@@ -13,10 +13,9 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" aria-current="page"
                                         href="{% url 'mainpage' %}">Главная</a></li>
-                <!--                <li class="nav-item"><a class="nav-link" href="{% url 'catalog_category' categories.first.slug %}">Каталог</a></li>-->
                 <li class="nav-item">
                     <div class="btn-group dropdown">
-                        <a class="nav-link" href="{% url 'catalog_category' categories.first.slug %}" role="button"
+                        <a class="nav-link" href="{% if categories %}{% url 'catalog_category' categories.first.slug %}{% endif %}" role="button"
                            aria-expanded="false">
                             Каталог
                         </a>

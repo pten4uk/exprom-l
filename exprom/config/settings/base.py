@@ -1,10 +1,30 @@
+import logging
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 from config.settings.ckeditor import CKEDITOR_CONFIGS
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+
+LOG_FMT = "%(asctime)s - [%(levelname)s] - %(name)s - %(funcName)s(%(lineno)d) - %(message)s"
+LOG_DATE_FMT = "%Y-%m-%d %H:%M:%S"
+fmt = logging.Formatter(fmt=LOG_FMT, datefmt=LOG_DATE_FMT)
+
+sh = logging.StreamHandler(sys.stdout)
+sh.setLevel(logging.INFO)
+sh.setFormatter(fmt)
+
+fh = logging.FileHandler(os.path.join(BASE_DIR, 'info.log'))
+fh.setLevel(logging.INFO)
+fh.setFormatter(fmt)
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(sh)
+logger.addHandler(fh)
 
 
 load_dotenv(os.path.join(BASE_DIR.parent, '.env'))
