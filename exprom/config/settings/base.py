@@ -91,11 +91,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": os.getenv('MYSQL_DATABASE'),
-        "USER": os.getenv('MYSQL_USER'),
-        "PASSWORD": os.getenv('MYSQL_PASSWORD'),
-        "HOST": os.getenv('MYSQL_HOST', 'localhost'),
-        "PORT": os.getenv('MYSQL_PORT', '3307'),
+        "NAME": os.getenv('POSTGRESQL_DATABASE'),
+        "USER": os.getenv('POSTGRESQL_USER'),
+        "PASSWORD": os.getenv('POSTGRESQL_PASSWORD'),
+        "HOST": os.getenv('POSTGRESQL_HOST', 'localhost'),
+        "PORT": os.getenv('POSTGRESQL_PORT', '3307'),
     }
 }
 
