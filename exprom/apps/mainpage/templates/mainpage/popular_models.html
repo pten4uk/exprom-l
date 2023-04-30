@@ -1,26 +1,25 @@
-<div id="carouselExampleDark" class="carousel carousel-dark slide">
-    <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
-  <div class="carousel-inner">
+<div class="container">
+  <h2 class="mb-5">Популярные модели</h2>
+  <div class="row">
     {% for model in popular_models %}
-      <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}"
-           data-bs-interval="1000">
-        <img src="{{ model.photo.url }}" class="d-block w-100" alt="фотография">
-        <div class="carousel-caption d-none d-md-block">
-          <h5>{{ model.get_name }}</h5>
+        <div class="col col-sm-12 col-md-12 col-lg-3">
+          <a style="text-decoration: inherit; color: inherit;"
+             href="{% url 'catalog_category_product' model.category.slug model.slug %}">
+            <div class="card mb-3 card-with-hover" style="">
+              <div class="d-flex align-items-center justify-content-center p-1">
+                <img src="{{ model.photo.url }}" class="card-img-top" alt="...">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ model.get_name }}</h5>
+<!--                <p class="card-text">{{ model.shirt_description }}</p>-->
+                <p class="card-text">
+                  Размеры (Ш*В*Г): {{ model.width }}*{{ model.height }}*{{ model.depth }}
+                </p>
+                <p class="card-text text-muted mt-4">{{ model.price }} руб.</p>
+              </div>
+            </div>
+          </a>
         </div>
-      </div>
     {% endfor %}
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
 </div>

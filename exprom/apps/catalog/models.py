@@ -13,6 +13,7 @@ from .utils.slug import slugify
 class Category(models.Model):
     name = models.CharField('Название', max_length=100, unique=True)
     slug = models.SlugField('Название ссылки', max_length=100, blank=True, unique=True)
+    description = models.TextField('Описание', max_length=600, default='')
 
     objects = models.Manager()
 

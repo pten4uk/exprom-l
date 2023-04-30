@@ -39,7 +39,7 @@ class PhotoInline(GenericTabularInline):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ('slug',)
-    fields = ('name', 'slug',)
+    fields = ('name', 'slug', 'description')
 
 
 @admin.register(Product)
