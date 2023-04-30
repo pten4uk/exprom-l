@@ -74,7 +74,13 @@ class ProductAdmin(admin.ModelAdmin):
 
     @admin.display(description='Главная фотография')
     def get_photo(self, obj: Product):
-        return mark_safe(f'<img src="{obj.photo.url}" width="100px">')
+        photo = obj.get_photo()
+        url = None
+
+        if photo:
+            url = photo.url
+
+        return mark_safe(f'<img src="{url}" width="100px">')
 
 
 # -------------------------------------------------Developer Mode-------------------------------------------------------

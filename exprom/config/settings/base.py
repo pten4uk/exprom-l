@@ -1,13 +1,18 @@
 import os
 from pathlib import Path
-
+from dotenv import load_dotenv
 from config.settings.ckeditor import CKEDITOR_CONFIGS
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = 'django-insecure-yj-1&$_tbcv9wh@-x41w6hl##tu$%)dv^zpb+!97cvrd4+%3%*'
 
-DEBUG = True
+load_dotenv(os.path.join(BASE_DIR.parent, '.env'))
+
+
+SECRET_KEY = os.getenv('SECRET_KEY', '')
+
+DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -76,13 +81,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.getenv('MYSQL_DATABASE'),
+        "USER": os.getenv('MYSQL_USER'),
+        "PASSWORD": os.getenv('MYSQL_PASSWORD'),
+        "HOST": os.getenv('MYSQL_HOST', 'localhost'),
+        "PORT": os.getenv('MYSQL_PORT', '3307'),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {

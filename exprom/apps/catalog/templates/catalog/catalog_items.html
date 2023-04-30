@@ -11,7 +11,7 @@ g-4">
                   color: inherit;" href="{% url 'catalog_category_product' model.category.slug model.slug %}">
             <div class="card mb-3 card-with-hover" style="">
                 <div class="d-flex align-items-center justify-content-center p-1">
-                    <img src="{{ model.photo.url }}" class="card-img-top" alt="...">
+                    <img src="{{ model.get_photo.url }}" class="card-img-top" alt="...">
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Модель {{ model.number }}</h5>

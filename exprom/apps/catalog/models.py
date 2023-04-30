@@ -69,7 +69,6 @@ class Product(models.Model):
         return f'{self.category} {self.number}'
 
     def save(self, *args, **kwargs):
-
         # добавляем слаг
         self.name: str
         self.slug = slugify(self.name)
@@ -83,6 +82,13 @@ class Product(models.Model):
         """ Возвращает имя для репрезентации модели """
 
         return f'{self.name} {self.number}'
+
+    def get_photo(self):
+        if self.photo:
+            if not os.path.exists(self.photo.path):
+                self.photo = None
+                self.save()
+            return self.photo
 
     def add_view(self):
         """ Добавляет один просмотр к данному объекту """

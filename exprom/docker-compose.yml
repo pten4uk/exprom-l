@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:latest
+    ports:
+      - "3307:3306"
+    command:
+      - ""
+    environment:
+      MYSQL_DATABASE: "mysql"
+      MYSQL_ROOT_PASSWORD: "test"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_RANDOM_ROOT_PASSWORD: "false"
