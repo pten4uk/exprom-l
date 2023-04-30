@@ -16,6 +16,7 @@
             integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
             crossorigin="anonymous"></script>
     <link href="{% static 'mainpage/css/header.css' %}" rel="stylesheet">
+    <link href="{% static 'mainpage/css/footer.css' %}" rel="stylesheet">
     {% block css_links %}
     {% endblock %}
 </head>
@@ -23,12 +24,14 @@
 
 <header>{% include 'header.html' %}</header>
 
-<div style="margin-top: 150px;">
+<div id="page-content" style="margin-top: 150px;">
     {% block content %}
     {% endblock %}
 </div>
-<footer class="footer mt-auto py-3 bg-light">
-    <div class="container">Привет</div>
-</footer>
+
+<footer class="footer mt-5 py-3 bg-light">{% include 'footer.html' %}</footer>
+
+<script src="{% static '/mainpage/js/headerSearch.js' %}"></script>
+
 </body>
 </html>

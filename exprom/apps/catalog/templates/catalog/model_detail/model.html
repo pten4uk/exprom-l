@@ -1,17 +1,20 @@
 {% extends 'catalog/catalog.html' %}
+{% load static %}
 
 {% block title %}
 {{ model.name }} {{ model.pk }}
 {% endblock title %}
 
-{% block catalog_items %}
+{% block css_links %}
+<link href="{% static 'catalog/css/model.css' %}" rel="stylesheet">
+{% endblock %}
 
-{% include 'catalog/model_detail/photo_modal.html' %}
+{% block catalog_items %}
 
 <article class="row mb-5">
     <section class="col-md-6">
         {% if model.photo %}
-        <div class="col">
+        <div id="main-photo" class="col">
             <img class="img-thumbnail w-100"
                  src="{{ model.photo.url }}"
                  alt="Фотография">
@@ -19,7 +22,7 @@
         {% endif %}
         <div class="row mt-2">
             {% for photo in model.get_additional_photos %}
-            <div class="col">
+            <div class="col additional-photo">
                 <img class="img-thumbnail w-100"
                      src="{{ photo.photo.url }}"
                      alt="Фотография">
@@ -29,7 +32,8 @@
     </section>
 
     <section class="col-md-6">
-        <h2 class="mb-5">{{ model.price }} руб.</h2>
+        <h2 class="mb-3">{{ model.name }}</h2>
+        <h3 class="mb-5">{{ model.price }} руб.</h3>
         <p>{{ model.shirt_description }}</p>
         <h5>Ширина: {{ model.width }} см.</h5>
         <h5>Высота: {{ model.height }} см.</h5>
@@ -39,8 +43,20 @@
 </article>
 
 <article class="col w-75">
-
     <p>{{ model.description }}</p>
 </article>
+
+<script>
+    let mainPhoto = document.getElementById('main-photo')
+    let additionalPhotos = document.querySelectorAll('.additional-photo')
+
+    for (let additionalPhoto of additionalPhotos) {
+        additionalPhoto.addEventListener('click', (e) => {
+            let addPhotoInner = e.currentTarget.innerHTML
+            e.currentTarget.innerHTML = mainPhoto.innerHTML
+            mainPhoto.innerHTML = addPhotoInner
+        })
+    }
+</script>
 
 {% endblock catalog_items %}

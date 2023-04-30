@@ -1,4 +1,5 @@
-from django.http import Http404
+from django.db.models import Q
+from django.http import Http404, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
@@ -39,3 +40,40 @@ class ProductDetail(DetailView):
     slug_url_kwarg = 'product_slug'
     template_name = 'catalog/model_detail/model.html'
     context_object_name = 'model'
+
+    def get(self, request, *args, **kwargs):
+        obj: Product = self.get_object()
+        obj.add_view()
+        return super(ProductDetail, self).get(request, *args, **kwargs)
+
+
+# API
+def product_search(request):
+    search = request.GET.get('search', '')
+    qs = Product.objects.filter(
+        Q(name__icontains=search) |
+        Q(shirt_description__icontains=search) |
+        Q(description__icontains=search) |
+        Q(number__icontains=search)
+    )
+    data = []
+
+    for product in qs:
+
+        serialized_product = {
+            'pk': product.pk,
+            'slug': product.slug,
+            'category_slug': product.category.slug,
+            'name': product.name,
+            'number': product.number,
+            'price': product.price,
+            'photo': product.photo.url,
+            'shirt_description': product.shirt_description,
+            'description': product.description,
+            'width': product.width,
+            'height': product.height,
+            'depth': product.depth,
+        }
+        data.append(serialized_product)
+
+    return JsonResponse(data=data, safe=False)

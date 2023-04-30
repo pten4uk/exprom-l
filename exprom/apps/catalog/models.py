@@ -54,6 +54,9 @@ class Product(models.Model):
     depth = models.PositiveSmallIntegerField('Глубина')
     price = models.PositiveSmallIntegerField('Цена')
 
+    # количество просмотров продукта (заходы на детальную страницу)
+    views = models.PositiveBigIntegerField(default=0)
+
     objects = models.Manager()
 
     class Meta:
@@ -75,13 +78,24 @@ class Product(models.Model):
         if self.photo:
             PhotoFormatter(self.photo.path).save()
 
+    def get_name(self):
+        """ Возвращает имя для репрезентации модели """
+
+        return f'{self.name} {self.number}'
+
+    def add_view(self):
+        """ Добавляет один просмотр к данному объекту """
+
+        self.views += 1
+        self.save()
+
     def get_additional_photos(self):
         """
         Получает полный список объектов дополнительных фотографий,
         и проверяет существуют ли сами фотографии
         """
 
-        photos: QuerySet[Photo] = ContentType.objects.get_for_model(self).photo_set.all()
+        photos: QuerySet[Photo] = Photo.objects.filter(object_id=self.pk)
 
         for photo in photos:
             photo.check_photo_exists()

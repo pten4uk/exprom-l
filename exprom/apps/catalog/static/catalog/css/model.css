@@ -1,0 +1,7 @@
+.additional-photo {
+    cursor: pointer;
+}
+
+.additional-photo:hover > img {
+    border: 1px solid grey;
+}

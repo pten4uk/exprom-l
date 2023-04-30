@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg fixed-top bg-light shadow-sm`" aria-label="Main navigation">
+<nav class="navbar navbar-expand-lg fixed-top bg-light p-4" aria-label="Main navigation">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'mainpage' %}">
             <img src="http://www.exprom-l.ru/upload/boxsol.bitcorp/6e2/6e2059ec52c0fb8993adb7b80759247d.png"
@@ -28,12 +28,16 @@
         </div>
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
             <div class="input-group">
-                <input type="search" class="form-control form-control" placeholder="Поиск по каталогу..."
+                <input type="search"
+                       id="catalog-search"
+                       class="form-control form-control"
+                       placeholder="Поиск по каталогу..."
                        aria-label="Search">
-                <button class="btn btn-outline-secondary" type="submit">Найти</button>
             </div>
 
         </form>
     </div>
 
 </nav>
+
+
