@@ -2,13 +2,12 @@ version: "3"
 
 services:
   db:
-    image: mysql:latest
-    ports:
-      - "3307:3306"
-    command:
-      - ""
+    image: postgres:latest
+#    command:
+#      - "psql"
     environment:
-      MYSQL_DATABASE: "mysql"
-      MYSQL_ROOT_PASSWORD: "test"
-      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-      MYSQL_RANDOM_ROOT_PASSWORD: "false"
+      POSTGRES_DB: "test_db"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
+    ports:
+      - "5432:5432"
