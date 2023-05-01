@@ -8,6 +8,7 @@ from django.db.models import QuerySet
 from .utils import upload_function
 from .utils.process_photo import PhotoFormatter
 from .utils.slug import slugify
+from .utils.uploading import upload_material
 
 
 class Category(models.Model):
@@ -136,3 +137,49 @@ class Photo(models.Model):
 
         if self.photo and not os.path.exists(self.photo.path):
             self.delete()
+
+
+class MaterialCategory(models.Model):
+    name = models.CharField('Имя', max_length=60)
+    description = models.CharField('Описание', max_length=500, default='', blank=True)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = 'Категория материала'
+        verbose_name_plural = 'Категории материала'
+
+
+class Material(models.Model):
+    """ Материал обивки модели """
+
+    name = models.CharField('Имя', max_length=30)
+    photo = models.ImageField('Фотография', upload_to=upload_material)
+    category = models.ForeignKey('MaterialCategory', verbose_name='Категория', on_delete=models.CASCADE)
+
+    objects = models.Manager()
+
+    class Meta:
+        verbose_name = 'Материал'
+        verbose_name_plural = 'Материалы'
+
+    def __str__(self):
+        return f'{self.name}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.photo:
+            PhotoFormatter(self.photo.path).save()
+
+    def get_photo(self):
+        if self.photo:
+            if not os.path.exists(self.photo.path):
+                self.photo = None
+                self.save()
+            return self.photo
+
+

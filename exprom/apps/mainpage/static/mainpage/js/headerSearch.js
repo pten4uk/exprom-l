@@ -45,10 +45,14 @@ function fetchData(search) {
 
 let canFetchTimeout;
 
+searchInput.addEventListener('keydown', e => {
+    if (e.keyCode === 13) e.preventDefault()
+})
+
 searchInput.addEventListener('input', e => {
     clearTimeout(canFetchTimeout)
-    if (!e.target.value) location.reload()
     canFetchTimeout = setTimeout(() => {
+        if (!e.target.value) return location.reload()
         fetchData(e.target.value)
     }, 1000)
 })

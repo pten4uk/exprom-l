@@ -7,7 +7,7 @@ from django.contrib.contenttypes.admin import GenericTabularInline
 from django.contrib.sites.models import Site
 from django.utils.safestring import mark_safe
 
-from .forms.model_forms import ProductAdminForm, PhotoInlineAdminForm
+from .forms.model_forms import ProductAdminForm, PhotoInlineAdminForm, MaterialAdminForm
 from .models import *
 
 admin.site.unregister(Group)
@@ -82,6 +82,26 @@ class ProductAdmin(admin.ModelAdmin):
 
         return mark_safe(f'<img src="{url}" width="100px">')
 
+
+@admin.register(MaterialCategory)
+class MaterialCategoryAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Material)
+class MaterialAdmin(admin.ModelAdmin):
+    form = MaterialAdminForm
+    list_display = ('name', 'category', 'get_photo')
+
+    @admin.display(description='Фотография')
+    def get_photo(self, obj: Material):
+        photo = obj.get_photo()
+        url = None
+
+        if photo:
+            url = photo.url
+
+        return mark_safe(f'<img src="{url}" width="100px">')
 
 # -------------------------------------------------Developer Mode-------------------------------------------------------
 

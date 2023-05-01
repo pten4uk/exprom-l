@@ -12,15 +12,23 @@
 {% block catalog_items %}
 
 <article class="row mb-5">
-    <section class="col-md-6">
+    <section class="col-md-6 mb-4">
         {% if model.photo %}
-        <div id="main-photo" class="col">
+        <div class="col">
             <img class="img-thumbnail w-100"
+                 id="main-photo"
                  src="{{ model.photo.url }}"
                  alt="Фотография">
         </div>
         {% endif %}
         <div class="row mt-2">
+            {% if model.photo %}
+            <div id="main-photo-lower" class="col additional-photo">
+                <img class="img-thumbnail w-100"
+                     src="{{ model.photo.url }}"
+                     alt="Фотография">
+            </div>
+            {% endif %}
             {% for photo in model.get_additional_photos %}
             <div class="col additional-photo">
                 <img class="img-thumbnail w-100"
@@ -46,15 +54,51 @@
     <p>{{ model.description }}</p>
 </article>
 
+<article class="col w-75 mb-5 mt-5">
+    <h3 class="mb-4">Выбрать цвет</h3>
+    {% for material_category in material_categories %}
+
+        <div class="row">
+            <div class="col-3 text-center">{{ material_category.name }}</div>
+            <div class="col">
+                <div class="row">
+                    {% for material in material_category.material_set.all %}
+                        <div class="card mb-3 card-with-hover col-sm-6 col-lg-3 col-md-6 p-0 m-1" style="">
+                            <div class="d-flex align-items-center justify-content-center p-0">
+                                <img src="{{ material.get_photo.url }}" class="card-img-top" alt="...">
+                            </div>
+                            <div class="card-body p-1">
+                                <p class="card-text text-center">{{ material.name }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</article>
+
+
 <script>
     let mainPhoto = document.getElementById('main-photo')
+    let mainPhotoLower = document.getElementById('main-photo-lower')
     let additionalPhotos = document.querySelectorAll('.additional-photo')
 
-    for (let additionalPhoto of additionalPhotos) {
+    let miniPhotos = [mainPhotoLower, ...additionalPhotos]
+
+    for (let additionalPhoto of miniPhotos) {
+
         additionalPhoto.addEventListener('click', (e) => {
-            let addPhotoInner = e.currentTarget.innerHTML
-            e.currentTarget.innerHTML = mainPhoto.innerHTML
-            mainPhoto.innerHTML = addPhotoInner
+            let img = e.currentTarget.querySelector('img')
+            mainPhoto.src = img.src
+
+            for (let additionalPhoto of miniPhotos) {
+                let img = additionalPhoto.querySelector('img')
+                img.style.border = 'none'
+                if (img.src === mainPhoto.src) img.style.border = '1px solid gray'
+            }
+
+
         })
     }
 </script>

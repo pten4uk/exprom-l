@@ -15,3 +15,14 @@ def upload_function(instance, filename):
     else:
         os.remove(full_path)
         return path
+
+
+def upload_material(instance, filename):
+    path = f'materials/{filename}'
+    full_path = os.path.join(MEDIA_ROOT, path)
+
+    if not os.path.exists(full_path):
+        return path
+    else:
+        os.remove(full_path)
+        return path

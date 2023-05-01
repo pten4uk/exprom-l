@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 
-from .models import Product, Category
+from .models import Product, Category, Material, MaterialCategory
 
 
 class ProductList(ListView):
@@ -45,6 +45,11 @@ class ProductDetail(DetailView):
         obj: Product = self.get_object()
         obj.add_view()
         return super(ProductDetail, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['material_categories'] = MaterialCategory.objects.all()
+        return context
 
 
 # API

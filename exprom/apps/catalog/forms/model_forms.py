@@ -24,3 +24,8 @@ class PhotoInlineAdminForm(forms.ModelForm):
     class Meta:
         model = Photo
         fields = ('photo',)
+
+
+class MaterialAdminForm(forms.ModelForm):
+    photo = forms.ImageField(label='Фотография', widget=ProductPhotoInput())
+
