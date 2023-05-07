@@ -8,7 +8,6 @@ from config.settings.ckeditor import CKEDITOR_CONFIGS
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-
 LOG_FMT = "%(asctime)s - [%(levelname)s] - %(name)s - %(funcName)s(%(lineno)d) - %(message)s"
 LOG_DATE_FMT = "%Y-%m-%d %H:%M:%S"
 fmt = logging.Formatter(fmt=LOG_FMT, datefmt=LOG_DATE_FMT)
@@ -26,16 +25,13 @@ logger.setLevel(logging.INFO)
 logger.addHandler(sh)
 logger.addHandler(fh)
 
-
 load_dotenv(os.path.join(BASE_DIR.parent, '.env'))
-
 
 SECRET_KEY = os.getenv('SECRET_KEY', '')
 
 DEBUG = True if os.getenv('DEBUG', 'False') == 'True' else False
 
 ALLOWED_HOSTS = ['*']
-
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -55,6 +51,7 @@ INSTALLED_APPS = [
 
     'apps.catalog.apps.CatalogConfig',
     'apps.mainpage',
+    'apps.telegram.apps.TelegramConfig'
 ]
 
 SITE_ID = 1
@@ -100,7 +97,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -134,7 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
@@ -145,18 +140,19 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TELEGRAM_WEBHOOK_URL = os.getenv('TELEGRAM_WEBHOOK_URL')
 
 CKEDITOR_CONFIGS = CKEDITOR_CONFIGS

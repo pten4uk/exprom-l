@@ -1,0 +1,30 @@
+{% load all_pages_tags %}
+
+{% get_order_form as form %}
+
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Оставить заявку</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'make_order' %}" method="post">
+                {% csrf_token %}
+
+                <div class="modal-body">
+                    {% for field in form %}
+                      <div class="mb-3">
+                          <label for="{{ field.id_for_label }}" class="col-form-label">{{ field.label }}:</label>
+                          {{ field }}
+                      </div>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

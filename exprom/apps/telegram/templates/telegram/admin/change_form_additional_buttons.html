@@ -1,0 +1,13 @@
+<button id="send-test-message" type="button" class="btn btn-info">Тестовое сообщение</button>
+
+<script>
+    let sendTestMessageButton = document.getElementById('send-test-message');
+
+    sendTestMessageButton.addEventListener('click', e => {
+        fetch('/api/telegram/test_bot')
+            .then(r => r)
+            .then(data => {
+
+            })
+    })
+</script>

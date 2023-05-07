@@ -2,12 +2,12 @@
 {% load flatpages %}
 {% get_flatpages as flatpages %}
 
-<nav class="navbar navbar-expand-lg fixed-top bg-light p-4" aria-label="Main navigation">
+<nav class="navbar navbar-expand-lg bg-light p-4" aria-label="Main navigation">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'mainpage' %}">
             <img src="{% static 'mainpage/images/exprom-logo.png' %}"
                  alt="Экспром-Л" width="175">
-<!--            <p class="small text-muted text-center mb-0" style="font-size: 0.65em;">Мебельное предприятие</p>-->
+            <!--            <p class="small text-muted text-center mb-0" style="font-size: 0.65em;">Мебельное предприятие</p>-->
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -15,7 +15,9 @@
                                         href="{% url 'mainpage' %}">Главная</a></li>
                 <li class="nav-item">
                     <div class="btn-group dropdown">
-                        <a class="nav-link" href="{% if categories %}{% url 'catalog_category' categories.first.slug %}{% endif %}" role="button"
+                        <a class="nav-link"
+                           href="{% if categories %}{% url 'catalog_category' categories.first.slug %}{% endif %}"
+                           role="button"
                            aria-expanded="false">
                             Каталог
                         </a>
@@ -27,14 +29,25 @@
                     </div>
 
                 </li>
-<!--                <li class="nav-item"><a class="nav-link disabled">Disabled</a></li>-->
+                <!--                <li class="nav-item"><a class="nav-link disabled">Disabled</a></li>-->
 
                 {% for page in flatpages %}
-                    <li class="nav-item"><a class="nav-link" href="{{ page.url }}">{{ page.title }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ page.url }}">{{ page.title }}</a></li>
                 {% endfor %}
 
             </ul>
         </div>
+
+        <!-- Button trigger modal -->
+        <button type="button"
+                class="btn btn-primary mb-2 mb-md-0 mb-lg-0"
+                style="margin-right: 1rem;"
+                data-bs-toggle="modal"
+                data-bs-target="#orderModal">
+            Заказать онлайн
+        </button>
+
+
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
             <div class="input-group">
                 <input type="search"
@@ -48,5 +61,29 @@
     </div>
 
 </nav>
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="alert alert-danger show fade" role="alert">
+                {{ message }}
+            </div>
+        {% else %}
+            <div class="alert alert-success show fade" role="alert">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <script>
+        let messages = document.querySelectorAll('.alert')
+
+        for (let message of messages) {
+            setTimeout(() => {
+                message.className = 'fade'
+            }, 5000)
+        }
+    </script>
+{% endif %}
 
 

@@ -15,23 +15,23 @@
     <section class="col-md-6 mb-4">
         {% if model.photo %}
         <div class="col">
-            <img class="img-thumbnail w-100"
+            <img class="img-thumbnail"
                  id="main-photo"
                  src="{{ model.photo.url }}"
                  alt="Фотография">
         </div>
         {% endif %}
-        <div class="row mt-2">
+        <div class="row row-cols-4">
             {% if model.photo %}
-            <div id="main-photo-lower" class="col additional-photo">
-                <img class="img-thumbnail w-100"
-                     src="{{ model.photo.url }}"
+            <div id="main-photo-lower" class="col mt-2 additional-photo">
+                <img class="img-thumbnail"
+                     src="{{ model.get_photo.url }}"
                      alt="Фотография">
             </div>
             {% endif %}
             {% for photo in model.get_additional_photos %}
-            <div class="col additional-photo">
-                <img class="img-thumbnail w-100"
+            <div class="col mt-2 additional-photo">
+                <img class="img-thumbnail"
                      src="{{ photo.photo.url }}"
                      alt="Фотография">
             </div>
@@ -40,7 +40,7 @@
     </section>
 
     <section class="col-md-6">
-        <h2 class="mb-3">{{ model.name }}</h2>
+        <h2 class="mb-3">{{ model.get_name }}</h2>
         <h3 class="mb-5">{{ model.price }} руб.</h3>
         <p>{{ model.shirt_description }}</p>
         <h5>Ширина: {{ model.width }} см.</h5>
@@ -97,10 +97,43 @@
                 img.style.border = 'none'
                 if (img.src === mainPhoto.src) img.style.border = '1px solid gray'
             }
-
-
         })
     }
+
+    let photoZoomed = false
+    mainPhoto.addEventListener('click', e => {
+        if (photoZoomed) {
+            e.currentTarget.classList.remove('position-fixed')
+            e.currentTarget.style = ''
+            photoZoomed = false
+            return
+        }
+
+        let padding = 300
+        let headerHeight = 100
+        let windowWidth = window.screen.width
+        let windowHeight = window.screen.height
+        let pictureWidth = e.currentTarget.width
+        let pictureHeight = e.currentTarget.height
+
+        while (true) {
+            if (pictureWidth > windowWidth - padding) break
+            else if (pictureHeight > windowHeight - padding - headerHeight) break
+            pictureWidth += 50
+            pictureHeight += 50
+        }
+
+        e.currentTarget.classList.add('position-fixed')
+        e.currentTarget.style.transform = 'translateX(-50%)'
+        e.currentTarget.style.transition = 'all .2s'
+        e.currentTarget.style.top = headerHeight
+        e.currentTarget.style.left = '50%'
+        e.currentTarget.style.zIndex = 1000
+        e.currentTarget.style.width = `${pictureWidth}px`
+        e.currentTarget.style.height = `${pictureHeight}px`
+
+        photoZoomed = true
+    })
 </script>
 
 {% endblock catalog_items %}

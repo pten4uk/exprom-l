@@ -427,6 +427,32 @@ files = [
 ]
 
 [[package]]
+name = "pytelegrambotapi"
+version = "4.11.0"
+description = "Python Telegram bot api."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyTelegramBotAPI-4.11.0.tar.gz", hash = "sha256:dba9184bae3bb6a56c70ad3216202cd734a63b6b508ec1b1a2f23afa399d3c47"},
+]
+
+[package.dependencies]
+requests = "*"
+
+[package.extras]
+aiohttp = ["aiohttp"]
+aioredis = ["aioredis"]
+coloredlogs = ["coloredlogs"]
+fastapi = ["fastapi"]
+json = ["ujson"]
+pil = ["Pillow"]
+psutil = ["psutil"]
+redis = ["redis (>=3.4.1)"]
+uvicorn = ["uvicorn"]
+watchdog = ["watchdog"]
+
+[[package]]
 name = "python-dotenv"
 version = "1.0.0"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -563,4 +589,4 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "592780efd3a7cf74f8721ea356e47956ad346edbe6e8da9276577465ab902a63"
+content-hash = "228d2ded1824ee28fec98a89ce3e5428cc2562bd61da62319e109f2585bead6d"

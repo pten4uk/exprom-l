@@ -36,6 +36,12 @@ class PhotoInline(GenericTabularInline):
         return qs
 
 
+class TagInline(admin.TabularInline):
+    model = Tag
+    fields = ('name', )
+    extra = 1
+
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ('slug',)
@@ -45,7 +51,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     form = ProductAdminForm
-    inlines = [PhotoInline]
+    inlines = [PhotoInline, TagInline]
     list_select_related = True
     list_display = ('get_str_title', 'category', 'shirt_description', 'price', 'get_photo')
     fields = (
@@ -88,13 +94,13 @@ class MaterialCategoryAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Material)
+@admin.register(MaterialLayout)
 class MaterialAdmin(admin.ModelAdmin):
     form = MaterialAdminForm
     list_display = ('name', 'category', 'get_photo')
 
     @admin.display(description='Фотография')
-    def get_photo(self, obj: Material):
+    def get_photo(self, obj: MaterialLayout):
         photo = obj.get_photo()
         url = None
 

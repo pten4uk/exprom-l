@@ -34,16 +34,31 @@
 {% include 'yandex_metric.html' %}
 
 
-<header>{% include 'header.html' %}</header>
+{% include 'modals/order_modal.html' %}
 
-<div id="page-content" style="margin-top: 150px;">
-    {% block content %}
-    {% endblock %}
-</div>
+    <header id="header" class="fixed-top">{% include 'header.html' %}</header>
 
-<footer class="footer py-3 bg-light">{% include 'footer.html' %}</footer>
+    <div id="page-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer class="footer py-3 bg-light">{% include 'footer.html' %}</footer>
+
 
 <script src="{% static 'mainpage/js/headerSearch.js' %}"></script>
 
+<script>
+    function setMarginTop () {
+        let header = document.getElementById('header')
+        let pageContent = document.getElementById('page-content')
+
+        let marginTop = header.clientHeight + 40
+        pageContent.style.marginTop = `${marginTop}px`
+    }
+
+    window.onresize = e => setMarginTop()
+    setMarginTop()
+</script>
 </body>
 </html>

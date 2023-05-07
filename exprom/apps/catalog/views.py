@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 
-from .models import Product, Category, Material, MaterialCategory
+from .models import Product, Category, MaterialLayout, MaterialCategory
 
 
 class ProductList(ListView):
@@ -55,12 +55,7 @@ class ProductDetail(DetailView):
 # API
 def product_search(request):
     search = request.GET.get('search', '')
-    qs = Product.objects.filter(
-        Q(name__icontains=search) |
-        Q(shirt_description__icontains=search) |
-        Q(description__icontains=search) |
-        Q(number__icontains=search)
-    )
+    qs = Product.objects.filter(tags__name__icontains=search)
     data = []
 
     for product in qs:

@@ -14,7 +14,7 @@ g-4">
                     <img src="{{ model.get_photo.url }}" class="card-img-top" alt="...">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Модель {{ model.number }}</h5>
+                    <h5 class="card-title">{{ model.get_name }}</h5>
                     <p class="card-text">{{ model.shirt_description }}</p>
                     <p class="card-text">
                         Размеры (Ш*В*Г): {{ model.width }}*{{ model.height }}*{{ model.depth }}

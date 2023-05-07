@@ -31,6 +31,18 @@ class Category(models.Model):
         super().save(*args, **kwargs)
 
 
+class Tag(models.Model):
+    name = models.CharField('Название', max_length=60)
+    product = models.ForeignKey('Product', related_name='tags', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Тэг'
+        verbose_name_plural = 'Тэги'
+
+    def __str__(self):
+        return f'Тэг: {self.name}'
+
+
 class Product(models.Model):
     number = models.PositiveSmallIntegerField('Номер', primary_key=True)
     name = models.CharField(
@@ -82,7 +94,10 @@ class Product(models.Model):
     def get_name(self):
         """ Возвращает имя для репрезентации модели """
 
-        return f'{self.name} {self.number}'
+        return f'{self.name} {self.get_number()}'
+
+    def get_number(self) -> str:
+        return '0' + str(self.number)
 
     def get_photo(self):
         if self.photo:
@@ -149,11 +164,11 @@ class MaterialCategory(models.Model):
         return f'{self.name}'
 
     class Meta:
-        verbose_name = 'Категория материала'
-        verbose_name_plural = 'Категории материала'
+        verbose_name = 'Категория раскладки материала'
+        verbose_name_plural = 'Категории раскладки материала'
 
 
-class Material(models.Model):
+class MaterialLayout(models.Model):
     """ Материал обивки модели """
 
     name = models.CharField('Имя', max_length=30)
@@ -163,8 +178,8 @@ class Material(models.Model):
     objects = models.Manager()
 
     class Meta:
-        verbose_name = 'Материал'
-        verbose_name_plural = 'Материалы'
+        verbose_name = 'Раскладка материала'
+        verbose_name_plural = 'Раскладки материала'
 
     def __str__(self):
         return f'{self.name}'
