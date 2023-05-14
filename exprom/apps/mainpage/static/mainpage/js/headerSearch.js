@@ -1,5 +1,6 @@
 let pageContent = document.getElementById('page-content')
 let searchInput = document.getElementById('catalog-search')
+let dataList = document.getElementById('header-search-list')
 
 
 function addNewHTML(data) {
@@ -17,7 +18,7 @@ function addNewHTML(data) {
                             <img src="${model.photo}" class="card-img-top" alt="...">
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Модель ${model.number}</h5>
+                            <h5 class="card-title">${model.get_name}</h5>
                             <p class="card-text">${model.shirt_description}</p>
                             <p class="card-text">
                                 Размеры (Ш*В*Г): ${model.width}*${model.height}*${model.depth}
@@ -34,6 +35,21 @@ function addNewHTML(data) {
     pageContent.appendChild(container)
 }
 
+function addTagsToDatalist(data) {
+
+    dataList.innerHTML = ''
+    let maxElems = 5
+    let counter = 0
+
+    for (let elem of data) {
+        if (counter > maxElems) break
+        let option = document.createElement('option')
+        option.innerText = elem.name
+        dataList.appendChild(option)
+        counter++
+    }
+}
+
 function fetchData(search) {
     fetch(`/catalog/api/search/?search=${search}`)
         .then(r => r.json())
@@ -42,6 +58,13 @@ function fetchData(search) {
         })
 }
 
+function fetchTags(search) {
+    fetch(`/catalog/api/search_tags/?search=${search}`)
+        .then(r => r.json())
+        .then(data => {
+            addTagsToDatalist(data)
+        })
+}
 
 let canFetchTimeout;
 
@@ -53,7 +76,10 @@ searchInput.addEventListener('input', e => {
     clearTimeout(canFetchTimeout)
     canFetchTimeout = setTimeout(() => {
         if (!e.target.value) return location.reload()
+        fetchTags(e.target.value)
         fetchData(e.target.value)
     }, 1000)
 })
+
+console.dir(dataList)
 

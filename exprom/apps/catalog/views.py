@@ -1,10 +1,10 @@
 from django.db.models import Q
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 
-from .models import Product, Category, MaterialLayout, MaterialCategory
+from .models import Product, Category, MaterialLayout, MaterialCategory, Tag
 
 
 class ProductList(ListView):
@@ -53,7 +53,7 @@ class ProductDetail(DetailView):
 
 
 # API
-def product_search(request):
+def product_search(request: HttpRequest):
     search = request.GET.get('search', '')
     qs = Product.objects.filter(tags__name__icontains=search)
     data = []
@@ -64,6 +64,7 @@ def product_search(request):
             'pk': product.pk,
             'slug': product.slug,
             'category_slug': product.category.slug,
+            'get_name': product.get_name(),
             'name': product.name,
             'number': product.number,
             'price': product.price,
@@ -75,5 +76,22 @@ def product_search(request):
             'depth': product.depth,
         }
         data.append(serialized_product)
+
+    return JsonResponse(data=data, safe=False)
+
+
+def tag_search(request: HttpRequest):
+    search = request.GET.get('search', '')
+    qs = Tag.objects.filter(name__icontains=search)
+    data = []
+
+    for tag in qs:
+        tag: Tag
+
+        serialized_tag = {
+            'id': tag.pk,
+            'name': tag.name
+        }
+        data.append(serialized_tag)
 
     return JsonResponse(data=data, safe=False)

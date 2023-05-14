@@ -3,4 +3,5 @@ venv/
 media/
 *.sqlite3
 *.env
+*.log
 

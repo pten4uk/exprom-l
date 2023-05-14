@@ -1,0 +1,54 @@
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active"
+                id="home-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#home"
+                type="button"
+                role="tab"
+                aria-controls="home"
+                aria-selected="true">Описание</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link"
+                id="profile-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#profile"
+                type="button"
+                role="tab"
+                aria-controls="profile"
+                aria-selected="false">Цвета</button>
+    </li>
+</ul>
+
+<div class="tab-content mt-4 mb-5" id="myTabContent">
+    <div class="tab-pane fade show active"
+         id="home"
+         role="tabpanel"
+         aria-labelledby="home-tab">{{ model.description }}</div>
+    <div class="tab-pane fade"
+         id="profile"
+         role="tabpanel"
+         aria-labelledby="profile-tab">
+
+        {% for material_category in material_categories %}
+        <div class="row">
+            <h3 class="col-3 text-center">{{ material_category.name }}</h3>
+            <div class="col">
+                <div class="row">
+                    {% for material in material_category.material_layouts.all %}
+                    <div class="card mb-3 card-with-hover col-sm-6 col-lg-3 col-md-6 p-0 m-1" style="">
+                        <div class="d-flex align-items-center justify-content-center p-0">
+                            <img src="{{ material.get_photo.url }}" class="card-img-top material-photo-zoom" alt="...">
+                        </div>
+                        <div class="card-body p-1">
+                            <p class="card-text text-center">{{ material.name }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

@@ -11,7 +11,7 @@
 
 {% block catalog_items %}
 
-<article class="row mb-5">
+<article class="row mb-3">
     <section class="col-md-6 mb-4">
         {% if model.photo %}
         <div class="col">
@@ -50,33 +50,8 @@
 
 </article>
 
-<article class="col w-75">
-    <p>{{ model.description }}</p>
-</article>
-
-<article class="col w-75 mb-5 mt-5">
-    <h3 class="mb-4">Выбрать цвет</h3>
-    {% for material_category in material_categories %}
-
-        <div class="row">
-            <div class="col-3 text-center">{{ material_category.name }}</div>
-            <div class="col">
-                <div class="row">
-                    {% for material in material_category.material_set.all %}
-                        <div class="card mb-3 card-with-hover col-sm-6 col-lg-3 col-md-6 p-0 m-1" style="">
-                            <div class="d-flex align-items-center justify-content-center p-0">
-                                <img src="{{ material.get_photo.url }}" class="card-img-top" alt="...">
-                            </div>
-                            <div class="card-body p-1">
-                                <p class="card-text text-center">{{ material.name }}</p>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-</article>
+<!--вкладки-->
+{% include 'catalog/model_detail/model_tabs.html' %}
 
 
 <script>
@@ -84,6 +59,7 @@
     let mainPhotoLower = document.getElementById('main-photo-lower')
     let additionalPhotos = document.querySelectorAll('.additional-photo')
 
+    addPhotoZoom(mainPhoto)
     let miniPhotos = [mainPhotoLower, ...additionalPhotos]
 
     for (let additionalPhoto of miniPhotos) {
@@ -100,40 +76,60 @@
         })
     }
 
-    let photoZoomed = false
-    mainPhoto.addEventListener('click', e => {
-        if (photoZoomed) {
-            e.currentTarget.classList.remove('position-fixed')
-            e.currentTarget.style = ''
-            photoZoomed = false
-            return
-        }
+    let materialPhotosZoom = document.querySelectorAll('.material-photo-zoom')
 
-        let padding = 300
-        let headerHeight = 100
-        let windowWidth = window.screen.width
-        let windowHeight = window.screen.height
-        let pictureWidth = e.currentTarget.width
-        let pictureHeight = e.currentTarget.height
+    for (let materialPhoto of materialPhotosZoom) {
+        addPhotoZoom(materialPhoto)
+    }
 
-        while (true) {
-            if (pictureWidth > windowWidth - padding) break
-            else if (pictureHeight > windowHeight - padding - headerHeight) break
-            pictureWidth += 50
-            pictureHeight += 50
-        }
+    function addPhotoZoom(photo) {
+        let photoZoomed = false
+        photo.addEventListener('click', e => {
+            if (photoZoomed) {
+                e.currentTarget.classList.remove('position-fixed')
+                e.currentTarget.style = ''
+                photoZoomed = false
+                return
+            }
 
-        e.currentTarget.classList.add('position-fixed')
-        e.currentTarget.style.transform = 'translateX(-50%)'
-        e.currentTarget.style.transition = 'all .2s'
-        e.currentTarget.style.top = headerHeight
-        e.currentTarget.style.left = '50%'
-        e.currentTarget.style.zIndex = 1000
-        e.currentTarget.style.width = `${pictureWidth}px`
-        e.currentTarget.style.height = `${pictureHeight}px`
+            let padding = 350
+            let headerHeight = 120
+            let windowWidth = window.screen.width
+            let windowHeight = window.screen.height
+            let pictureWidth = e.currentTarget.width
+            let pictureHeight = e.currentTarget.height
+            let shadowSize
+            let pictureDivdider = pictureWidth / pictureHeight
 
-        photoZoomed = true
-    })
+            if (windowWidth > windowHeight) shadowSize = windowWidth
+            else shadowSize = windowHeight
+
+            while (true) {
+                if (pictureWidth > windowWidth - padding) {
+                    pictureHeight = pictureWidth / pictureDivdider
+                    break
+                } else if (pictureHeight > windowHeight - padding - headerHeight) {
+                    pictureWidth = pictureHeight * pictureDivdider
+                    break
+                }
+                pictureWidth += 50
+                pictureHeight += 50
+            }
+
+            e.currentTarget.classList.add('position-fixed')
+            e.currentTarget.style.boxShadow = `0 0 0px ${shadowSize}px rgba(0, 0, 0, .7)`
+            e.currentTarget.style.transform = 'translateX(-50%)'
+            e.currentTarget.style.transition = 'all .2s'
+            e.currentTarget.style.top = `${headerHeight}px`
+            e.currentTarget.style.left = '50%'
+            e.currentTarget.style.zIndex = 1000
+            e.currentTarget.style.width = `${pictureWidth}px`
+            e.currentTarget.style.height = `${pictureHeight}px`
+
+            photoZoomed = true
+        })
+    }
+
 </script>
 
 {% endblock catalog_items %}

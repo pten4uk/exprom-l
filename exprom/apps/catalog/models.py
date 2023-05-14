@@ -35,6 +35,8 @@ class Tag(models.Model):
     name = models.CharField('Название', max_length=60)
     product = models.ForeignKey('Product', related_name='tags', on_delete=models.CASCADE)
 
+    objects = models.Manager()
+
     class Meta:
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
@@ -173,7 +175,12 @@ class MaterialLayout(models.Model):
 
     name = models.CharField('Имя', max_length=30)
     photo = models.ImageField('Фотография', upload_to=upload_material)
-    category = models.ForeignKey('MaterialCategory', verbose_name='Категория', on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        'MaterialCategory',
+        verbose_name='Категория',
+        related_name='material_layouts',
+        on_delete=models.CASCADE
+    )
 
     objects = models.Manager()
 
