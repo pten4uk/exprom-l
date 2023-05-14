@@ -55,6 +55,7 @@
 
 
 <script>
+    let header = document.getElementById('header')
     let mainPhoto = document.getElementById('main-photo')
     let mainPhotoLower = document.getElementById('main-photo-lower')
     let additionalPhotos = document.querySelectorAll('.additional-photo')
@@ -93,7 +94,7 @@
             }
 
             let padding = 350
-            let headerHeight = 120
+            let headerHeight = header.clientHeight + 30
             let windowWidth = window.screen.width
             let windowHeight = window.screen.height
             let pictureWidth = e.currentTarget.width
