@@ -1,13 +1,25 @@
-from django.db.models import Q
-from django.http import Http404, JsonResponse, HttpRequest
+from django.http import JsonResponse, HttpRequest
+from django.http import JsonResponse, HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 
-from .models import Product, Category, MaterialLayout, MaterialCategory, Tag
+from .models import Product, Category, MaterialCategory, Tag
+
+
+class AllProducts(ListView):
+    """ Полный список товаров отсортированный по номеру модели """
+
+    model = Product
+    context_object_name = 'models'
+    queryset = Product.objects.all()
+    ordering = ('number',)
+    template_name = 'catalog/all_models.html'
 
 
 class ProductList(ListView):
+    """ Список товаров отфильтрованный по категории """
+
     model = Product
     template_name = 'catalog/catalog.html'
     context_object_name = 'models'
@@ -25,7 +37,7 @@ class ProductList(ListView):
         category = self._get_category_by_slug(category_slug)
 
         if category is None:
-            return redirect(reverse("catalog_category", args=(self._get_first_category().slug, )))
+            return redirect(reverse("catalog_category", args=(self._get_first_category().slug,)))
 
         return super().get_queryset().filter(category=category)
 
@@ -59,7 +71,6 @@ def product_search(request: HttpRequest):
     data = []
 
     for product in qs:
-
         serialized_product = {
             'pk': product.pk,
             'slug': product.slug,
