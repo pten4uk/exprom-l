@@ -50,10 +50,10 @@ class Product(models.Model):
     name = models.CharField(
         'Короткое название',
         help_text='Короткое название, которое будет отображаться перед номером модели',
-        max_length=30,  # одинаково со slug
+        max_length=50,  # одинаково со slug, в форме админки на 1 меньше (иначе ошибка возникает)
         unique=True,
     )
-    slug = models.SlugField('Имя ссылки', max_length=30, unique=True)
+    slug = models.SlugField('Имя ссылки', max_length=50, unique=True)
     category = models.ForeignKey(
         Category,
         verbose_name='Категория',

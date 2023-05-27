@@ -1,3 +1,5 @@
+{% load catalog_tags %}
+
 <div class="row
 <!--row-cols-12 -->
 <!--row-cols-sm-12 -->
@@ -5,26 +7,11 @@
 <!--row-cols-lg-12 -->
 g-4">
     {% for model in models %}
-        <div class="col col-sm-12 col-md-12 col-lg-6">
-            <a style="
-                  text-decoration: inherit;
-                  color: inherit;" href="{% url 'catalog_category_product' model.category.slug model.slug %}">
-            <div class="card mb-3 card-with-hover" style="">
-                <div class="d-flex align-items-center justify-content-center p-1">
-                    <img src="{{ model.get_photo.url }}" class="card-img-top" alt="...">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ model.get_name }}</h5>
-                    <p class="card-text">{{ model.shirt_description }}</p>
-                    <p class="card-text">
-                        Размеры (Ш*В*Г): {{ model.width }}*{{ model.height }}*{{ model.depth }}
-                    </p>
-                    <p class="card-text text-muted mt-4">{{ model.price }} руб.</p>
-                </div>
-            </div>
-            </a>
-        </div>
+        {% catalog_model_card_tag model=model card_class='col col-sm-12 col-md-12 col-lg-3 col-xl-6' %}
     {% empty %}
-        <h3 class="headline text-muted">Пока что не добавлено ни одного товара...</h3>
+    <h3 class="headline text-muted">Пока что не добавлено ни одного товара...</h3>
     {% endfor %}
+
+    {% catalog_pagination_tag paginator=paginator page_obj=page_obj %}
+
 </div>

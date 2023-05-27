@@ -21,6 +21,7 @@ class ProductList(ListView):
     """ Список товаров отфильтрованный по категории """
 
     model = Product
+    paginate_by = 15
     template_name = 'catalog/catalog.html'
     context_object_name = 'models'
 
@@ -50,7 +51,7 @@ class ProductList(ListView):
 class ProductDetail(DetailView):
     model = Product
     slug_url_kwarg = 'product_slug'
-    template_name = 'catalog/model_detail/model.html'
+    template_name = 'catalog/model_detail/model_detail.html'
     context_object_name = 'model'
 
     def get(self, request, *args, **kwargs):
@@ -67,7 +68,7 @@ class ProductDetail(DetailView):
 # API
 def product_search(request: HttpRequest):
     search = request.GET.get('search', '')
-    qs = Product.objects.filter(tags__name__icontains=search)
+    qs = Product.objects.filter(tags__name__icontains=search).distinct()
     data = []
 
     for product in qs:

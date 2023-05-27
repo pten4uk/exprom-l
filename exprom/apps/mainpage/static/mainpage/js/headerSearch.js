@@ -6,10 +6,13 @@ let dataList = document.getElementById('header-search-list')
 function addNewHTML(data) {
     let container = document.createElement('div')
     container.className = 'container'
+    let row = document.createElement('div')
+    row.className = 'row'
+    container.appendChild(row)
 
     for (let model of data) {
         let elementDiv = document.createElement('div')
-        elementDiv.className = 'col col-sm-12 col-md-12 col-lg-6'
+        elementDiv.className = 'col col-sm-12 col-md-12 col-lg-3'
         elementDiv.innerHTML = `
                     <a style="text-decoration: inherit; color: inherit;"
                     href="/catalog/${model.category_slug}/${model.slug}">
@@ -28,7 +31,7 @@ function addNewHTML(data) {
                     </div>
                     </a>
                 `
-        container.appendChild(elementDiv)
+        row.appendChild(elementDiv)
     }
 
     pageContent.innerHTML = ''

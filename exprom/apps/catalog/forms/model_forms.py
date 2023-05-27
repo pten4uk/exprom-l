@@ -5,6 +5,7 @@ from apps.catalog.models import Product, Category, Photo
 
 
 class ProductAdminForm(forms.ModelForm):
+    name = forms.CharField(label='Короткое название', max_length=49)
     category = forms.ModelChoiceField(
         label='Категория',
         empty_label='Без категории',

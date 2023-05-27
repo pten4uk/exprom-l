@@ -1,0 +1,21 @@
+{% if page_obj.has_other_pages %}
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+            <a class="page-link" href="?page={{ page_obj.number|add:-1 }}" tabindex="-1">Предыдущая</a>
+        </li>
+        {% for page in paginator.page_range %}
+            {% if page_obj.number == page %}
+                <li class="page-item active"><a class="page-link" href="?page={{ page}}">{{ page }}</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        <li class="page-item">
+            <a class="page-link {% if not page_obj.has_next %}disabled{% endif %}"
+               href="?page={{ page_obj.number|add:1 }}">Следующая</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}

@@ -1,26 +1,11 @@
+{% load catalog_tags %}
+
 <section class="container-fluid bg-light p-5">
     <div class="container">
         <h2 class="mb-5">Популярные модели</h2>
         <div class="row">
             {% for model in popular_models %}
-                <div class="col col-sm-12 col-md-12 col-lg-3">
-                    <a style="text-decoration: inherit; color: inherit;"
-                       href="{% if model.category %}{% url 'catalog_category_product' model.category.slug model.slug %}{% endif %}">
-                        <div class="card mb-3 card-with-hover" style="">
-                            <div class="d-flex align-items-center justify-content-center p-1">
-                                <img src="{{ model.get_photo.url }}" class="card-img-top" alt="...">
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">{{ model.get_name }}</h5>
-                                <!--                <p class="card-text">{{ model.shirt_description }}</p>-->
-                                <p class="card-text">
-                                    Размеры: Ш {{ model.width }} * Г {{ model.depth }} * В {{ model.height }}
-                                </p>
-                                <p class="card-text text-muted mt-4">{{ model.price }} руб.</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                {% catalog_model_card_tag model=model %}
             {% endfor %}
         </div>
         <div class="text-center">

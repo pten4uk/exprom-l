@@ -1,0 +1,18 @@
+<div class="{{ card_class }}">
+    <a style="text-decoration: inherit; color: inherit;"
+       href="{% if model.category %}{% url 'catalog_category_product' model.category.slug model.slug %}{% endif %}">
+        <div class="card mb-3 card-with-hover" style="">
+            <div class="d-flex align-items-center justify-content-center p-1">
+                <img src="{{ model.get_photo.url }}" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ model.get_name }}</h5>
+                <p class="card-text">{{ model.shirt_description }}</p>
+                <p class="card-text">
+                    Размеры (Ш*В*Г): {{ model.width }}*{{ model.height }}*{{ model.depth }}
+                </p>
+                <p class="card-text text-muted mt-4">{{ model.price }} руб.</p>
+            </div>
+        </div>
+    </a>
+</div>
