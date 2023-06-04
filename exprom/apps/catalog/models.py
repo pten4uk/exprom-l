@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import QuerySet
 
-from .utils import upload_function
+from .utils import upload_product_photo
 from .utils.process_photo import PhotoFormatter
 from .utils.slug import slugify
 from .utils.uploading import upload_material
@@ -62,7 +62,7 @@ class Product(models.Model):
         default=None,
         on_delete=models.SET_DEFAULT,
     )
-    photo = models.ImageField('Главное фото', upload_to=upload_function, null=True, blank=True)  # добавить валидатор для соотношения сторон фотографии
+    photo = models.ImageField('Главное фото', upload_to=upload_product_photo, null=True, blank=True)
     shirt_description = models.CharField('Краткое описание', max_length=50, blank=True, default='')
     description = models.TextField('Описание', blank=True)
     width = models.PositiveSmallIntegerField('Ширина')
@@ -132,7 +132,7 @@ class Photo(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    photo = models.ImageField('Изображение', upload_to=upload_function)
+    photo = models.ImageField('Изображение', upload_to=upload_product_photo)
 
     objects = models.Manager()
 
@@ -205,3 +205,26 @@ class MaterialLayout(models.Model):
             return self.photo
 
 
+class ProductProperty(models.Model):
+    """ Характеристика товара """
+
+    label = models.CharField('Название', max_length=60)
+
+    class Meta:
+        verbose_name = 'Характеристика товара'
+        verbose_name_plural = 'Характеристики товара'
+
+    def __str__(self):
+        return self.label
+
+
+class ProductPropertyValue(models.Model):
+    """ Значение характеристики для конкретного товара """
+
+    value = models.CharField('Значение', max_length=500)
+    product_property = models.ForeignKey('ProductProperty', verbose_name='Характеристика', on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', verbose_name='Товар', on_delete=models.CASCADE, related_name='properties')
+
+    class Meta:
+        verbose_name = 'Характеристика товара'
+        verbose_name_plural = 'Характеристики товара'

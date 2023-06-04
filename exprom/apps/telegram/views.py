@@ -6,9 +6,9 @@ from telebot.types import Update
 
 from apps.telegram.admin import BotDBAdmin
 from apps.telegram.deps import Bot
-from apps.telegram.forms import OrderForm
-from apps.telegram.models import BotAdminDB, OrderDB
-from apps.telegram.utils import send_bot_admin_message, send_new_order_to_admins
+from apps.telegram.forms import OrderForm, QuestionForm
+from apps.telegram.models import BotAdminDB, OrderDB, QuestionDB
+from apps.telegram.utils import send_bot_admin_message, send_new_order_to_admins, send_new_question_to_admins
 
 
 @csrf_exempt
@@ -36,6 +36,23 @@ def order(request: HttpRequest):
             obj: OrderDB = form.save()
             message = 'Заявка успешно отправлена! В ближайшее время с Вами свяжется наш менеджер.'
             send_new_order_to_admins(obj)
+            messages.success(request, message)
+        else:
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, f'Ошибка валидации поля "{field.label}": {error}')
+
+        return redirect('mainpage')
+
+
+def question(request: HttpRequest):
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+
+        if form.is_valid():
+            obj: QuestionDB = form.save()
+            message = 'Заявка успешно отправлена! В ближайшее время с Вами свяжется наш менеджер.'
+            send_new_question_to_admins(obj)
             messages.success(request, message)
         else:
             for field in form:

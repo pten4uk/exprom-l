@@ -3,7 +3,7 @@ import os
 from config.settings import MEDIA_ROOT
 
 
-def upload_function(instance, filename):
+def upload_product_photo(instance, filename):
     if hasattr(instance, 'content_object'):
         instance = instance.content_object
 

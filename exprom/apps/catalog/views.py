@@ -1,5 +1,4 @@
 from django.http import JsonResponse, HttpRequest
-from django.http import JsonResponse, HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
@@ -21,6 +20,7 @@ class ProductList(ListView):
     """ Список товаров отфильтрованный по категории """
 
     model = Product
+    queryset = Product.objects.select_related('category', 'properties').all()
     paginate_by = 15
     template_name = 'catalog/catalog.html'
     context_object_name = 'models'

@@ -1,5 +1,5 @@
 from apps.telegram.deps import Bot
-from apps.telegram.models import BotAdminDB, OrderDB
+from apps.telegram.models import BotAdminDB, OrderDB, QuestionDB
 
 
 def send_bot_admin_message(message: str):
@@ -25,3 +25,16 @@ def send_new_order_to_admins(order: OrderDB):
 
     send_bot_admin_message(text)
 
+
+def send_new_question_to_admins(question: QuestionDB):
+    """ Отправляет вопрос в телеграм ко всем администраторам бота """
+
+    text = '<b>Новый вопрос!</b>'
+    text += '\n'
+
+    text += f'\nИмя: {question.first_name}'
+    text += f'\nПочта: {question.email}'
+    text += f'\nТелефон: {question.phone}'
+    text += f'\nТекст вопроса: {question.text}'
+
+    send_bot_admin_message(text)

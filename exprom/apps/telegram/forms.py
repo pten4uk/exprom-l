@@ -1,7 +1,7 @@
 from django import forms
 
 from apps.catalog.models import Product
-from apps.telegram.models import OrderDB
+from apps.telegram.models import OrderDB, QuestionDB
 
 
 class OrderForm(forms.ModelForm):
@@ -31,3 +31,23 @@ class OrderForm(forms.ModelForm):
             self.add_error('model_number', 'Данной модели не существует')
 
         return model_number
+
+
+class QuestionForm(forms.ModelForm):
+    first_name = forms.CharField(label='Имя', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='Почта', widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    phone = forms.CharField(label='Телефон', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    text = forms.CharField(
+        label='Текст вопроса',
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        required=True,
+    )
+
+    class Meta:
+        model = QuestionDB
+        fields = (
+            'first_name',
+            'email',
+            'phone',
+            'text',
+        )

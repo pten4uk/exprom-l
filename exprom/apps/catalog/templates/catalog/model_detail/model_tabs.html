@@ -1,35 +1,63 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active"
-                id="home-tab"
+                id="description-tab"
                 data-bs-toggle="tab"
-                data-bs-target="#home"
+                data-bs-target="#description"
                 type="button"
                 role="tab"
-                aria-controls="home"
-                aria-selected="true">Описание</button>
+                aria-controls="description"
+                aria-selected="true">Описание
+        </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link"
-                id="profile-tab"
+                id="property-tab"
                 data-bs-toggle="tab"
-                data-bs-target="#profile"
+                data-bs-target="#property"
                 type="button"
                 role="tab"
-                aria-controls="profile"
-                aria-selected="false">Цвета</button>
+                aria-controls="property"
+                aria-selected="false">Характеристики
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link"
+                id="material-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#material"
+                type="button"
+                role="tab"
+                aria-controls="material"
+                aria-selected="false">Цвета
+        </button>
     </li>
 </ul>
 
 <div class="tab-content mt-4 mb-5" id="myTabContent">
     <div class="tab-pane fade show active"
-         id="home"
+         id="description"
          role="tabpanel"
-         aria-labelledby="home-tab">{{ model.description }}</div>
+         aria-labelledby="description-tab">{{ model.description }}</div>
+    <div class="tab-pane fade show"
+         id="property"
+         role="tabpanel"
+         aria-labelledby="property-tab">
+        {% for property in model.properties.all %}
+        <div class="row">
+            <div class="col-sm text-muted">
+                {{ property.product_property.label }}:
+            </div>
+            <div class="col-sm text-muted">
+                {{ property.value }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
     <div class="tab-pane fade"
-         id="profile"
+         id="material"
          role="tabpanel"
-         aria-labelledby="profile-tab">
+         aria-labelledby="material-tab">
 
         {% for material_category in material_categories %}
         <div class="row">

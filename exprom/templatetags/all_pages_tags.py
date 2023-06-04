@@ -1,7 +1,7 @@
 from django import template
 
 from apps.catalog.models import Category
-from apps.telegram.forms import OrderForm
+from apps.telegram.forms import OrderForm, QuestionForm
 
 register = template.Library()
 
@@ -14,3 +14,8 @@ def get_categories():
 @register.simple_tag()
 def get_order_form():
     return OrderForm()
+
+
+@register.simple_tag()
+def get_question_form():
+    return QuestionForm()

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.telegram.models import BotDB, BotAdminDB, OrderDB
+from apps.telegram.models import BotDB, BotAdminDB, OrderDB, QuestionDB
 
 
 @admin.register(BotAdminDB)
@@ -52,3 +52,15 @@ class OrderDBAdmin(admin.ModelAdmin):
         if change:
             super().save_model(request, obj, form, change)
 
+
+@admin.register(QuestionDB)
+class QuestionDBAdmin(admin.ModelAdmin):
+    list_display = ('email', 'phone',)
+    fields = ('first_name', 'email', 'phone', 'text')
+    readonly_fields = ('first_name', 'email', 'phone', 'text')
+
+    def save_model(self, request, obj, form, change):
+        # убираем возможность создания новых моделей вопроса через админпанель
+
+        if change:
+            super().save_model(request, obj, form, change)

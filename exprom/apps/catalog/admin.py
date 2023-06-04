@@ -42,6 +42,12 @@ class TagInline(admin.TabularInline):
     extra = 1
 
 
+class ProductPropertyValueInline(admin.TabularInline):
+    model = ProductPropertyValue
+    fields = ('value', 'product_property')
+    extra = 1
+
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ('slug',)
@@ -51,7 +57,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     form = ProductAdminForm
-    inlines = [PhotoInline, TagInline]
+    inlines = [PhotoInline, TagInline, ProductPropertyValueInline]
     list_select_related = True
     list_display = ('get_str_title', 'category', 'shirt_description', 'price', 'get_photo')
     fields = (
@@ -108,6 +114,11 @@ class MaterialAdmin(admin.ModelAdmin):
             url = photo.url
 
         return mark_safe(f'<img src="{url}" width="100px">')
+
+
+@admin.register(ProductProperty)
+class ProductPropertyAdmin(admin.ModelAdmin):
+    pass
 
 # -------------------------------------------------Developer Mode-------------------------------------------------------
 

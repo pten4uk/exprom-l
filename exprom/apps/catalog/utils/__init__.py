@@ -1,1 +1,1 @@
-from .uploading import upload_function
+from .uploading import upload_product_photo

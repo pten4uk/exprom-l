@@ -77,3 +77,19 @@ class OrderDB(models.Model):
 
     def __str__(self):
         return f'Заказ от: {self.email}'
+
+
+class QuestionDB(models.Model):
+    """ Вопрос через онлайн заявку """
+
+    first_name = models.CharField('Имя', max_length=60)
+    email = models.EmailField('Почта')
+    phone = models.CharField('Телефон', max_length=20)
+    text = models.TextField('Текст', max_length=2000)
+
+    class Meta:
+        verbose_name = 'Вопрос'
+        verbose_name_plural = 'Вопросы'
+
+    def __str__(self):
+        return f'Вопрос от: {self.email}'
